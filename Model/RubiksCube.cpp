@@ -4,7 +4,7 @@
 // Given a color return it's first letter
 //
 
-char RubiksCube::getColorLetter(COLOR color) const
+char RubiksCube::getColorLetter(COLOR color)
 {
     switch (color)
     {
@@ -25,7 +25,7 @@ char RubiksCube::getColorLetter(COLOR color) const
 /*
  * Describe a move using an index
  */
-string RubiksCube::getMove(MOVE ind) const
+string RubiksCube::getMove(MOVE ind)
 {
     switch (ind)
     {

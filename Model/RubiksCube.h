@@ -68,7 +68,7 @@ public:
      * Returns the first letter of the given COLOR
      * Eg: For COLOR::GREEN, it returns 'G'
      */
-    char getColorLetter(COLOR color) const;
+    static char getColorLetter(COLOR color);
 
     /*
      * Returns true if the Rubik Cube is solved, otherwise returns false.
@@ -78,7 +78,7 @@ public:
     /*
      * Returns the move in the string format.
      */
-    string getMove(MOVE ind) const;
+    static string getMove(MOVE ind);
 
     /*
      * Print the Rubik Cube in Planar format.

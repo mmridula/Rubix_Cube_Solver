@@ -7,6 +7,7 @@
 #include "Model/RubiksCube1dArray.cpp"
 #include "Model/RubiksCubeBitboard.cpp"
 #include "Solver/DFSSolver.h"
+#include "Solver/BFSSolver.h"
 
 using namespace std;
 
@@ -131,46 +132,56 @@ int main()
 
     // Create two Cubes ------------------------------------------------------------------------------------------
 
-    {
-        //    RubiksCube1dArray cube1;
-        //    RubiksCube1dArray cube2;
+    //    RubiksCube1dArray cube1;
+    //    RubiksCube1dArray cube2;
 
-        //    RubiksCubeBitboard cube1;
-        //    RubiksCubeBitboard cube2;
+    //    RubiksCubeBitboard cube1;
+    //    RubiksCubeBitboard cube2;
 
-        //  Equality and assignment of cubes --------------------------------------------------------------------------
+    //  Equality and assignment of cubes --------------------------------------------------------------------------
 
-        {
+    //    unordered_map<RubiksCube1dArray, bool, Hash1d> mp1;
 
-            //    unordered_map<RubiksCube1dArray, bool, Hash1d> mp1;
+    //    unordered_map<RubiksCubeBitboard, bool, HashBitboard> mp1;
+    //
+    //    mp1[cube1] = true;
+    //    cube2.randomShuffleCube(8);
+    //    if (mp1[cube1]) cout << "Cube1 is present\n";
+    //    else cout << "Cube1 is not present\n";
+    //
+    // DFS Solver Testing __________________________________________________________________________________________
+    //    RubiksCube3dArray cube;
+    //    cube.print();
+    //
+    //    vector<RubiksCube::MOVE> shuffle_moves = cube.randomShuffleCube(6);
+    //    for (auto move: shuffle_moves) cout << cube.getMove(move) << " ";
+    //    cout << "\n";
+    //    cube.print();
+    //
+    //    DFSSolver<RubiksCube3dArray, Hash3d> dfsSolver(cube, 8);
+    //    vector<RubiksCube::MOVE> solve_moves = dfsSolver.solve();
+    //
+    //    for (auto move: solve_moves) cout << cube.getMove(move) << " ";
+    //    cout << "\n";
+    //    dfsSolver.rubiksCube.print();
 
-            //    unordered_map<RubiksCubeBitboard, bool, HashBitboard> mp1;
-            //
-            //    mp1[cube1] = true;
-            //    cube2.randomShuffleCube(8);
-            //    if (mp1[cube1]) cout << "Cube1 is present\n";
-            //    else cout << "Cube1 is not present\n";
-            //
-            //    if (mp1[cube2]) cout << "Cube2 is present\n";
-            //    else cout << "Cube2 is not present\n";
+    // BFS Solver -----------------------------------------------------------------------------------------------------
+    RubiksCubeBitboard cube;
+    cube.print();
 
-            RubiksCube3dArray cube;
-            cube.print();
+    vector<RubiksCube::MOVE> shuffle_moves = cube.randomShuffleCube(4);
+    for (auto move : shuffle_moves)
+        cout << cube.getMove(move) << " ";
+    cout << "\n";
+    cube.print();
 
-            vector<RubiksCube::MOVE> shuffle_moves = cube.randomShuffleCube(5);
-            for (auto move : shuffle_moves)
-                cout << cube.getMove(move) << " ";
-            cout << "\n";
-            cube.print();
+    BFSSolver<RubiksCubeBitboard, HashBitboard> bfsSolver(cube);
+    vector<RubiksCube::MOVE> solve_moves = bfsSolver.solve();
 
-            DFSSolver<RubiksCube3dArray, Hash3d> dfsSolver(cube, 6);
-            vector<RubiksCube::MOVE> solve_moves = dfsSolver.solve();
+    for (auto move : solve_moves)
+        cout << cube.getMove(move) << " ";
+    cout << "\n";
+    bfsSolver.rubiksCube.print();
 
-            for (auto move : solve_moves)
-                cout << cube.getMove(move) << " ";
-            cout << "\n";
-            dfsSolver.rubiksCube.print();
-
-            return 0;
-        }
-    }
+    return 0;
+}

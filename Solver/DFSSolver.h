@@ -15,8 +15,6 @@ template <typename T, typename H>
 class DFSSolver
 {
 private:
-    unordered_map<T, bool, H> visited;
-    unordered_map<T, int, H> depth;
     vector<RubiksCube::MOVE> moves;
     int max_search_depth;
 
@@ -27,14 +25,14 @@ private:
             return true;
         if (dep > max_search_depth)
             return false;
-        visited[rubiksCube] = true;
-        depth[rubiksCube] = dep;
+
         for (int i = 0; i < 18; i++)
         {
             rubiksCube.move(RubiksCube::MOVE(i));
             moves.push_back(RubiksCube::MOVE(i));
-            if ((!visited[rubiksCube] || depth[rubiksCube] > dep) && dfs(dep + 1))
+            if (dfs(dep + 1))
                 return true;
+            return true;
             moves.pop_back();
             rubiksCube.invert(RubiksCube::MOVE(i));
         }

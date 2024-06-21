@@ -10,6 +10,7 @@ class RubiksCube3dArray : public RubiksCube
 {
 private:
     char cube[6][3][3];
+
     void rotateFace(int ind)
     {
         char temp_arr[3][3] = {};

@@ -1,9 +1,5 @@
 #include "RubiksCube.h"
 
-//
-// Given a color return it's first letter
-//
-
 char RubiksCube::getColorLetter(COLOR color)
 {
     switch (color)
@@ -22,9 +18,7 @@ char RubiksCube::getColorLetter(COLOR color)
         return 'O';
     }
 }
-/*
- * Describe a move using an index
- */
+
 string RubiksCube::getMove(MOVE ind)
 {
     switch (ind)
@@ -68,9 +62,6 @@ string RubiksCube::getMove(MOVE ind)
     }
 }
 
-/*
- * Perform a move operation on using a Move index.
- */
 RubiksCube &RubiksCube::move(MOVE ind)
 {
     switch (ind)
@@ -114,9 +105,6 @@ RubiksCube &RubiksCube::move(MOVE ind)
     }
 }
 
-/*
- * Invert a move.
- */
 RubiksCube &RubiksCube::invert(MOVE ind)
 {
     switch (ind)
@@ -162,7 +150,7 @@ RubiksCube &RubiksCube::invert(MOVE ind)
 
 void RubiksCube::print() const
 {
-    cout << "Rubik Cube:\n\n";
+    cout << "Rubik's Cube:\n\n";
 
     for (int row = 0; row <= 2; row++)
     {
@@ -174,31 +162,39 @@ void RubiksCube::print() const
         }
         cout << "\n";
     }
+
     cout << "\n";
+
     for (int row = 0; row <= 2; row++)
     {
+
         for (int col = 0; col <= 2; col++)
         {
             cout << getColorLetter(getColor(FACE::LEFT, row, col)) << " ";
         }
         cout << " ";
+
         for (int col = 0; col <= 2; col++)
         {
             cout << getColorLetter(getColor(FACE::FRONT, row, col)) << " ";
         }
         cout << " ";
+
         for (int col = 0; col <= 2; col++)
         {
             cout << getColorLetter(getColor(FACE::RIGHT, row, col)) << " ";
         }
         cout << " ";
+
         for (int col = 0; col <= 2; col++)
         {
             cout << getColorLetter(getColor(FACE::BACK, row, col)) << " ";
         }
         cout << "\n";
     }
+
     cout << "\n";
+
     for (int row = 0; row <= 2; row++)
     {
         for (unsigned i = 0; i < 7; i++)
@@ -215,6 +211,7 @@ void RubiksCube::print() const
 vector<RubiksCube::MOVE> RubiksCube::randomShuffleCube(unsigned int times)
 {
     vector<MOVE> moves_performed;
+    srand(time(0));
     for (unsigned int i = 0; i < times; i++)
     {
         unsigned int selectMove = (rand() % 18);
@@ -222,4 +219,131 @@ vector<RubiksCube::MOVE> RubiksCube::randomShuffleCube(unsigned int times)
         this->move(static_cast<MOVE>(selectMove));
     }
     return moves_performed;
+}
+
+string RubiksCube::getCornerColorString(uint8_t ind) const
+{
+    string str = "";
+
+    switch (ind)
+    {
+        //        UFR
+    case 0:
+        str += getColorLetter(getColor(FACE::UP, 2, 2));
+        str += getColorLetter(getColor(FACE::FRONT, 0, 2));
+        str += getColorLetter(getColor(FACE::RIGHT, 0, 0));
+        break;
+
+        //            UFL
+    case 1:
+        str += getColorLetter(getColor(FACE::UP, 2, 0));
+        str += getColorLetter(getColor(FACE::FRONT, 0, 0));
+        str += getColorLetter(getColor(FACE::LEFT, 0, 2));
+        break;
+
+        //            UBL
+    case 2:
+        str += getColorLetter(getColor(FACE::UP, 0, 0));
+        str += getColorLetter(getColor(FACE::BACK, 0, 2));
+        str += getColorLetter(getColor(FACE::LEFT, 0, 0));
+        break;
+
+        //            UBR
+    case 3:
+        str += getColorLetter(getColor(FACE::UP, 0, 2));
+        str += getColorLetter(getColor(FACE::BACK, 0, 0));
+        str += getColorLetter(getColor(FACE::RIGHT, 0, 2));
+        break;
+
+        //            DFR
+    case 4:
+        str += getColorLetter(getColor(FACE::DOWN, 0, 2));
+        str += getColorLetter(getColor(FACE::FRONT, 2, 2));
+        str += getColorLetter(getColor(FACE::RIGHT, 2, 0));
+        break;
+
+        //            DFL
+    case 5:
+        str += getColorLetter(getColor(FACE::DOWN, 0, 0));
+        str += getColorLetter(getColor(FACE::FRONT, 2, 0));
+        str += getColorLetter(getColor(FACE::LEFT, 2, 2));
+        break;
+
+        //            DBR
+    case 6:
+        str += getColorLetter(getColor(FACE::DOWN, 2, 2));
+        str += getColorLetter(getColor(FACE::BACK, 2, 0));
+        str += getColorLetter(getColor(FACE::RIGHT, 2, 2));
+        break;
+
+        //            DBL
+    case 7:
+        str += getColorLetter(getColor(FACE::DOWN, 2, 0));
+        str += getColorLetter(getColor(FACE::BACK, 2, 2));
+        str += getColorLetter(getColor(FACE::LEFT, 2, 0));
+        break;
+    }
+    return str;
+}
+
+uint8_t RubiksCube::getCornerIndex(uint8_t ind) const
+{
+    string corner = getCornerColorString(ind);
+
+    uint8_t ret = 0;
+    for (auto c : corner)
+    {
+        if (c != 'W' && c != 'Y')
+            continue;
+        if (c == 'Y')
+        {
+            ret |= (1 << 2);
+        }
+    }
+
+    for (auto c : corner)
+    {
+        if (c != 'R' && c != 'O')
+            continue;
+        if (c == 'O')
+        {
+            ret |= (1 << 1);
+        }
+    }
+
+    for (auto c : corner)
+    {
+        if (c != 'B' && c != 'G')
+            continue;
+        if (c == 'G')
+        {
+            ret |= (1 << 0);
+        }
+    }
+    return ret;
+}
+
+uint8_t RubiksCube::getCornerOrientation(uint8_t ind) const
+{
+    string corner = getCornerColorString(ind);
+
+    string actual_str = "";
+
+    for (auto c : corner)
+    {
+        if (c != 'W' && c != 'Y')
+            continue;
+        actual_str.push_back(c);
+    }
+
+    if (corner[1] == actual_str[0])
+    {
+        return 1;
+    }
+    else if (corner[2] == actual_str[0])
+    {
+        return 2;
+    }
+    else
+        return 0;
 }

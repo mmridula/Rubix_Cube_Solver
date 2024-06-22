@@ -1,14 +1,11 @@
-//
-// Created by Marudhara Mridula
-//
-
 #include "RubiksCube.h"
 
 class RubiksCubeBitboard : public RubiksCube
 {
 
 private:
-        uint64_t all_colors[6]{};
+    uint64_t solved_side_config[6]{};
+
     int arr[3][3] = {{0, 1, 2},
                      {7, 8, 3},
                      {6, 5, 4}};
@@ -33,19 +30,66 @@ private:
         bitboard[s1] = (bitboard[s1] & ~(one_8 << (8 * s1_3))) | (clr3 << (8 * s1_3));
     }
 
+    int get5bitCorner(string corner)
+    {
+        int ret = 0;
+        string actual_str;
+        for (auto c : corner)
+        {
+            if (c != 'W' && c != 'Y')
+                continue;
+            actual_str.push_back(c);
+            if (c == 'Y')
+            {
+                ret |= (1 << 2);
+            }
+        }
+
+        for (auto c : corner)
+        {
+            if (c != 'R' && c != 'O')
+                continue;
+            if (c == 'O')
+            {
+                ret |= (1 << 1);
+            }
+        }
+
+        for (auto c : corner)
+        {
+            if (c != 'B' && c != 'G')
+                continue;
+            if (c == 'G')
+            {
+                ret |= (1 << 0);
+            }
+        }
+
+        if (corner[1] == actual_str[0])
+        {
+            ret |= (1 << 3);
+        }
+        else if (corner[2] == actual_str[0])
+        {
+            ret |= (1 << 4);
+        }
+        return ret;
+    }
+
 public:
-    uint64_t bitboard[6];
+    uint64_t bitboard[6]{};
+
     RubiksCubeBitboard()
     {
         for (int side = 0; side < 6; side++)
         {
             uint64_t clr = 1 << side;
             bitboard[side] = 0;
-            for (int idx = 0; idx < 8; idx++)
+            for (int faceIdx = 0; faceIdx < 8; faceIdx++)
             {
-                bitboard[side] |= clr << (8 * idx);
+                bitboard[side] |= clr << (8 * faceIdx);
             }
-            all_colors[side] = bitboard[side];
+            solved_side_config[side] = bitboard[side];
         }
     }
 
@@ -71,7 +115,7 @@ public:
     {
         for (int i = 0; i < 6; i++)
         {
-            if (all_colors[i] != bitboard[i])
+            if (solved_side_config[i] != bitboard[i])
                 return false;
         }
         return true;
@@ -282,43 +326,104 @@ public:
 
         return *this;
     }
+
     bool operator==(const RubiksCubeBitboard &r1) const
     {
-
         for (int i = 0; i < 6; i++)
         {
-
             if (bitboard[i] != r1.bitboard[i])
                 return false;
         }
-
         return true;
     }
 
     RubiksCubeBitboard &operator=(const RubiksCubeBitboard &r1)
     {
-
         for (int i = 0; i < 6; i++)
         {
-
             bitboard[i] = r1.bitboard[i];
         }
-
         return *this;
+    }
+
+    uint64_t getCorners()
+    {
+        uint64_t ret = 0;
+        string top_front_right = "";
+        top_front_right += getColorLetter(getColor(FACE::UP, 2, 2));
+        top_front_right += getColorLetter(getColor(FACE::FRONT, 0, 2));
+        top_front_right += getColorLetter(getColor(FACE::RIGHT, 0, 0));
+
+        string top_front_left = "";
+        top_front_left += getColorLetter(getColor(FACE::UP, 2, 0));
+        top_front_left += getColorLetter(getColor(FACE::FRONT, 0, 0));
+        top_front_left += getColorLetter(getColor(FACE::LEFT, 0, 2));
+
+        string top_back_left = "";
+        top_back_left += getColorLetter(getColor(FACE::UP, 0, 0));
+        top_back_left += getColorLetter(getColor(FACE::BACK, 0, 2));
+        top_back_left += getColorLetter(getColor(FACE::LEFT, 0, 0));
+
+        string top_back_right = "";
+        top_back_right += getColorLetter(getColor(FACE::UP, 0, 2));
+        top_back_right += getColorLetter(getColor(FACE::BACK, 0, 0));
+        top_back_right += getColorLetter(getColor(FACE::RIGHT, 0, 2));
+
+        string bottom_front_right = "";
+        bottom_front_right += getColorLetter(getColor(FACE::DOWN, 0, 2));
+        bottom_front_right += getColorLetter(getColor(FACE::FRONT, 2, 2));
+        bottom_front_right += getColorLetter(getColor(FACE::RIGHT, 2, 0));
+
+        string bottom_front_left = "";
+        bottom_front_left += getColorLetter(getColor(FACE::DOWN, 0, 0));
+        bottom_front_left += getColorLetter(getColor(FACE::FRONT, 2, 0));
+        bottom_front_left += getColorLetter(getColor(FACE::LEFT, 2, 2));
+
+        string bottom_back_right = "";
+        bottom_back_right += getColorLetter(getColor(FACE::DOWN, 2, 2));
+        bottom_back_right += getColorLetter(getColor(FACE::BACK, 2, 0));
+        bottom_back_right += getColorLetter(getColor(FACE::RIGHT, 2, 2));
+
+        string bottom_back_left = "";
+        bottom_back_left += getColorLetter(getColor(FACE::DOWN, 2, 0));
+        bottom_back_left += getColorLetter(getColor(FACE::BACK, 2, 2));
+        bottom_back_left += getColorLetter(getColor(FACE::LEFT, 2, 0));
+
+        ret |= get5bitCorner(top_front_right);
+        ret = ret << 5;
+
+        ret |= get5bitCorner(top_front_left);
+        ret = ret << 5;
+
+        ret |= get5bitCorner(top_back_right);
+        ret = ret << 5;
+
+        ret |= get5bitCorner(top_back_left);
+        ret = ret << 5;
+
+        ret |= get5bitCorner(bottom_front_right);
+        ret = ret << 5;
+
+        ret |= get5bitCorner(bottom_front_left);
+        ret = ret << 5;
+
+        ret |= get5bitCorner(bottom_back_right);
+        ret = ret << 5;
+
+        ret |= get5bitCorner(bottom_back_left);
+        ret = ret << 5;
+
+        return ret;
     }
 };
 
 struct HashBitboard
 {
-
     size_t operator()(const RubiksCubeBitboard &r1) const
     {
-
         uint64_t final_hash = r1.bitboard[0];
-
         for (int i = 1; i < 6; i++)
             final_hash ^= r1.bitboard[i];
-
         return (size_t)final_hash;
     }
 };

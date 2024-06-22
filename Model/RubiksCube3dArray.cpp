@@ -1,13 +1,10 @@
-//
-// Created by Marudhara Mridula
-//
 
 #include "RubiksCube.h"
 
 class RubiksCube3dArray : public RubiksCube
 {
 private:
-       void rotateFace(int ind)
+    void rotateFace(int ind)
     {
         char temp_arr[3][3] = {};
         for (int i = 0; i < 3; i++)
@@ -28,7 +25,8 @@ private:
     }
 
 public:
-    char cube[6][3][3];
+    char cube[6][3][3]{};
+
     RubiksCube3dArray()
     {
         for (int i = 0; i < 6; i++)
@@ -61,7 +59,7 @@ public:
         }
     }
 
-    bool isSolved() const
+    bool isSolved() const override
     {
         for (int i = 0; i < 6; i++)
         {
@@ -96,6 +94,7 @@ public:
 
         return *this;
     }
+
     RubiksCube &uPrime() override
     {
         this->u();
@@ -104,6 +103,7 @@ public:
 
         return *this;
     }
+
     RubiksCube &u2() override
     {
         this->u();
@@ -111,6 +111,7 @@ public:
 
         return *this;
     }
+
     RubiksCube &l() override
     {
         this->rotateFace(1);
@@ -129,19 +130,24 @@ public:
 
         return *this;
     }
+
     RubiksCube &lPrime() override
     {
         this->l();
         this->l();
         this->l();
+
         return *this;
     }
+
     RubiksCube &l2() override
     {
         this->l();
         this->l();
+
         return *this;
     }
+
     RubiksCube &f() override
     {
         this->rotateFace(2);
@@ -160,19 +166,24 @@ public:
 
         return *this;
     }
+
     RubiksCube &fPrime() override
     {
         this->f();
         this->f();
         this->f();
+
         return *this;
     }
+
     RubiksCube &f2() override
     {
         this->f();
         this->f();
+
         return *this;
     }
+
     RubiksCube &r() override
     {
         this->rotateFace(3);
@@ -191,6 +202,7 @@ public:
 
         return *this;
     }
+
     RubiksCube &rPrime() override
     {
         this->r();
@@ -199,6 +211,7 @@ public:
 
         return *this;
     }
+
     RubiksCube &r2() override
     {
         this->r();
@@ -206,6 +219,7 @@ public:
 
         return *this;
     }
+
     RubiksCube &b() override
     {
         this->rotateFace(4);
@@ -224,6 +238,7 @@ public:
 
         return *this;
     }
+
     RubiksCube &bPrime() override
     {
         this->b();
@@ -232,6 +247,7 @@ public:
 
         return *this;
     }
+
     RubiksCube &b2() override
     {
         this->b();
@@ -239,6 +255,7 @@ public:
 
         return *this;
     }
+
     RubiksCube &d() override
     {
         this->rotateFace(5);
@@ -257,6 +274,7 @@ public:
 
         return *this;
     }
+
     RubiksCube &dPrime() override
     {
         this->d();
@@ -265,6 +283,7 @@ public:
 
         return *this;
     }
+
     RubiksCube &d2() override
     {
         this->d();
@@ -272,6 +291,7 @@ public:
 
         return *this;
     }
+
     bool operator==(const RubiksCube3dArray &r1) const
     {
         for (int i = 0; i < 6; i++)
@@ -303,6 +323,7 @@ public:
         return *this;
     }
 };
+
 struct Hash3d
 {
     size_t operator()(const RubiksCube3dArray &r1) const

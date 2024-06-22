@@ -1,15 +1,8 @@
-//
-// Created by Marudhara Mridula
-//
-
 #include "RubiksCube.h"
 
 class RubiksCube1dArray : public RubiksCube
 {
 private:
-    /*
-     * Given a face index, row and col, return it's flattened index
-     */
     static inline int getIndex(int ind, int row, int col)
     {
         return (ind * 9) + (row * 3) + col;
@@ -36,7 +29,8 @@ private:
     }
 
 public:
-    char cube[54];
+    char cube[54]{};
+
     RubiksCube1dArray()
     {
         for (int i = 0; i < 6; i++)
@@ -303,6 +297,7 @@ public:
 
         return *this;
     }
+
     bool operator==(const RubiksCube1dArray &r1) const
     {
         for (int i = 0; i < 54; i++)
@@ -322,6 +317,7 @@ public:
         return *this;
     }
 };
+
 struct Hash1d
 {
     size_t operator()(const RubiksCube1dArray &r1) const

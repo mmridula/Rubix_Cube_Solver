@@ -17,8 +17,8 @@ int main()
         cout << cube.getMove(move) << " ";
     cout << "\n";
 
-    // DFSSolver<RubiksCubeBitboard, HashBitboard> solver(cube);
-    BFSSolver<RubiksCubeBitboard, HashBitboard> solver(cube);
+    DFSSolver<RubiksCubeBitboard, HashBitboard> solver(cube);
+    // BFSSolver<RubiksCubeBitboard, HashBitboard> solver(cube);
 
     auto moves = solver.solve();
 

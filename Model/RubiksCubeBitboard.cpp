@@ -1,5 +1,16 @@
 #include "RubiksCube.h"
 
+// Color	8-bit Format
+// White    00000001
+// Green    00000010
+// Red      00000100
+// Blue     00001000
+// Orange   00010000
+// Yellow   00100000
+
+// Color White Green Red    Blue   Orange Yellow
+// Face  Up    Left  Front Right   Back   Down
+
 class RubiksCubeBitboard : public RubiksCube
 {
 

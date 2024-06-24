@@ -1,7 +1,7 @@
 #ifndef RUBIKS_CUBE_SOLVER_CORNERDBMAKER_H
 #define RUBIKS_CUBE_SOLVER_CORNERDBMAKER_H
 #include "CornerPatternDatabase.h"
-#include "../Model/RubiksCubeBitboard.cpp"
+#include "../Model/RubiksCube3dArray.cpp"
 
 using namespace std;
 

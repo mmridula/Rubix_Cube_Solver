@@ -15,8 +15,8 @@ CornerDBMaker::CornerDBMaker(string _fileName, uint8_t init_val)
 
 bool CornerDBMaker::bfsAndStore()
 {
-    RubiksCubeBitboard cube;
-    queue<RubiksCubeBitboard> q;
+    RubiksCube3dArray cube;
+    queue<RubiksCube3dArray> q;
     q.push(cube);
     cornerDB.setNumMoves(cube, 0);
     int curr_depth = 0;
@@ -28,7 +28,7 @@ bool CornerDBMaker::bfsAndStore()
             break;
         for (int counter = 0; counter < n; counter++)
         {
-            RubiksCubeBitboard node = q.front();
+            RubiksCube3dArray node = q.front();
             q.pop();
             for (int i = 0; i < 18; i++)
             {

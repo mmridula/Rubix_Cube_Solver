@@ -10,14 +10,14 @@ using namespace std;
 int main()
 {
 
-    RubiksCubeBitboard cube;
+    RubiksCube3dArray cube;
     auto shuffleMoves = cube.randomShuffleCube(13);
     cube.print();
     for (auto move : shuffleMoves)
         cout << cube.getMove(move) << " ";
     cout << "\n";
 
-    DFSSolver<RubiksCubeBitboard, HashBitboard> solver(cube);
+    DFSSolver<RubiksCube3dArray, Hash3d> solver(cube);
     // BFSSolver<RubiksCubeBitboard, HashBitboard> solver(cube);
 
     auto moves = solver.solve();
